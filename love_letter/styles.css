@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    height: 100%;
+}
+
+.field {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90vw;
+    height: 100%;
+    border: 10px solid black;
+    padding: 5px;
+    text-align: center;
+}
+.main {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90vw;
+    height: auto;
+    border: 10px solid black;
+    padding: 15px;
+    text-align: center;
+}
+
+.hand {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 80%;
+    width: 80%;
+}
