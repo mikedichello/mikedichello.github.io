@@ -46,7 +46,7 @@
 //additional goals:
 //rules as pop up modal
 //cards enlarge on hover
-
+$(()=> {
 const player = {
     name: 'Player',
     hand: [],
@@ -99,9 +99,12 @@ class Card {
 
 const deck= [];
 
-const shuffleDeck= ()=> {
-
-}
+const shuffle= (array)=> {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    };
+};
 
 // create function createDeck
 //pass paramater(card, qty) #of cards
@@ -131,12 +134,29 @@ createDeck(king, 1);
 createDeck(countess, 1);
 createDeck(princess, 1);
 
+const $burnedCards = $('.burned-cards');
+
+const gameStart = () => {
+    shuffle(deck);
+    $burnedCards.append(`<img class="card" src="${deck[0].backImg}">`);
+    console.log(deck[0]);
+    deck.shift();
+    for(let i = 0; i < 3; i++){
+        console.log(deck[0].frontImg);
+        let newCard = deck[0];
+        $burnedCards.append(`<img class="card" src="${newCard.frontImg}">`);
+        deck.shift();
+    };
+};
 
 
 console.log(deck);
+gameStart();
 
 //drawing cards needs to remove obj from deck
 //
 
 
-//game reset all cards need to push back into deck to shuffle
+// game reset all cards need to push back into deck to shuffle;
+
+});
