@@ -47,34 +47,63 @@
 //rules as pop up modal
 //cards enlarge on hover
 $(()=> {
+
+
+const $promptBox = $('#prompt-text');
+const $drawBtn = $('#btn-draw');
+const $playBtn = $('#btn-play');
+const $playerHand = $('#player-hand');
+// const $ourHand = player.hand;
+const $ourHand = $('.our-hand');
+
+
 const player = {
     name: 'Player',
     hand: [],
     playedCards: [],
     totalPlayedValue: 0,
-    activePlayer: true,
-    draw: (topCard) => {
-
+    self: this,
+    draw: () => {
+        $('#player-hand').append(`<img class="card our-hand" src="${deck[0].frontImg}">`)
+        player.hand.push(deck[0]);
+        // console.log(player.hand);
+        deck.shift();
     },
-    discard: ()=> {
+    discard: (card)=> {
+        card.appendTo('#player-discard');
+        console.log(card);
 
     },
     play: ()=> {
+        $promptBox.text("Select a card to Play.");
+        $playerHand.css('cursor', 'pointer');
+        $ourHand.eq(1).on('click', (event)=>{
+            // $(event.target).lovers[activePlayer].discard($(event.target));
+            console.log('ive been clicked');
+        });
         
+
     }
-
-
-
+    
 }
+
+
+
+// $ourHand.on('click', (event)=>{
+//     console.log("it worked");
+// })
+
 
 const computer = {
     name: 'Computer',
     hand: [],
     playedCards: [],
     totalPlayedValue: 0,
-    activePlayer: false,
-    draw: (topCard) => {
-
+    draw: () => {
+        $('#opp-hand').append(`<img class="card their-hand" src="${deck[0].backImg}">`)
+        computer.hand.push(deck[0]);
+        console.log(computer.hand[0].name)
+        deck.shift();
     },
     discard: ()=> {
 
@@ -85,7 +114,32 @@ const computer = {
 }
 
 const lovers = [player, computer];
-const activePlayer = lovers[0];
+let activePlayer = 0;
+
+
+//////////////
+//Card Logic//
+//////////////
+
+// const app = {
+//     guard = () => {
+//         if(activePlayer === 0);
+//         prompt('Guess Value of Opponents Hand', "2-8")
+//     }
+// }
+
+
+
+const checkTurn = () => {
+    if (activePlayer === 0){
+        $promptBox.text("Player's Turn, Click 'DRAW' to draw a card.");
+        $drawBtn.attr('disabled', false);
+
+    }else{
+        $promptBox.text("Computer's Turn, Click 'DRAW' to draw a card.");
+        $drawBtn.attr('disabled', false);
+    }
+}
 
 
 class Card {
@@ -96,6 +150,7 @@ class Card {
         this.backImg = backImg;
     }
 }
+
 
 const deck= [];
 
@@ -136,26 +191,63 @@ createDeck(princess, 1);
 
 const $burnedCards = $('.burned-cards');
 
+//game start funcion shuffles deck array and deals out initial cards
 const gameStart = () => {
     shuffle(deck);
     $burnedCards.append(`<img class="card" src="${deck[0].backImg}">`);
-    console.log(deck[0]);
+    console.log(deck[0].name);
     deck.shift();
     for(let i = 0; i < 3; i++){
-        console.log(deck[0].frontImg);
+        console.log(deck[0].name);
         let newCard = deck[0];
         $burnedCards.append(`<img class="card" src="${newCard.frontImg}">`);
         deck.shift();
     };
+    player.draw();
+    computer.draw();
+    checkTurn();
 };
 
 
 console.log(deck);
 gameStart();
 
-//drawing cards needs to remove obj from deck
-//
 
+///////////////////
+//EVENT LISTENERS//
+///////////////////
+$drawBtn.on('click', () => {
+    lovers[activePlayer].draw();
+    $drawBtn.attr('disabled', true);
+    $promptBox.text(`${lovers[0].name}'s turn Play a Card`);
+    $playBtn.attr('disabled', false);
+
+    
+});
+
+$playBtn.on('click', () => {
+    if(activePlayer === 0) {
+        player.play();
+    }else{
+        computer.play();
+    }
+});
+
+
+
+
+
+
+
+
+// if-else to change active player -
+// if(activePlayer === 0) {
+//     activePlayer++;
+//     console.log(activePlayer);
+// }else{
+//     activePlayer--;
+//     console.log(activePlayer);
+// }
 
 // game reset all cards need to push back into deck to shuffle;
 

@@ -24,8 +24,9 @@ body {
 .main {
     margin: 5px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
     width: 90vh;
     height: 50vh;
     border: 10px solid black;
@@ -49,7 +50,7 @@ body {
 }
 
 #deck-back {
-    width: 100%;
+    width: 30%;
 }
 
 /* z index position must be non-static */
