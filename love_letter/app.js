@@ -46,6 +46,27 @@
 //additional goals:
 //rules as pop up modal
 //cards enlarge on hover
+//////////////////////
+//Class Constructor///
+//////////////////////
+
+class Card {
+    constructor (name, value, frontImg, backImg = 'images/back.JPG') {
+        this.name = name;
+        this.value = value;
+        this.frontImg = frontImg;
+        this.backImg = backImg;
+        this.element = null;
+    }
+    setElement(element) {
+       const card = $(`element`);
+       this.element = card;
+
+    }
+};
+
+const state = {};
+
 $(()=> {
 
 
@@ -53,8 +74,11 @@ const $promptBox = $('#prompt-text');
 const $drawBtn = $('#btn-draw');
 const $playBtn = $('#btn-play');
 const $playerHand = $('#player-hand');
+
 // const $ourHand = player.hand;
-const $ourHand = $('.our-hand');
+
+
+let whichCard = "left"
 
 
 const player = {
@@ -64,10 +88,17 @@ const player = {
     totalPlayedValue: 0,
     self: this,
     draw: () => {
-        $('#player-hand').append(`<img class="card our-hand" src="${deck[0].frontImg}">`)
-        player.hand.push(deck[0]);
-        // console.log(player.hand);
+        let newCard = deck[0];
+         player.hand.push(newCard);
+        $('#player-hand').append(`<img class="card" id="our-hand-${whichCard}" src="${newCard.frontImg}">`)
+        newCard.setElement(`#our-hand-${whichCard}`);
+        newCard.element.on('click', ()=> {
+            console.log('i was clicked.')
+        });
+        console.log(player.hand);
         deck.shift();
+        whichCard === "left" ? whichCard = "right" : whichCard = "left";
+        
     },
     discard: (card)=> {
         card.appendTo('#player-discard');
@@ -77,10 +108,10 @@ const player = {
     play: ()=> {
         $promptBox.text("Select a card to Play.");
         $playerHand.css('cursor', 'pointer');
-        $ourHand.eq(1).on('click', (event)=>{
-            // $(event.target).lovers[activePlayer].discard($(event.target));
-            console.log('ive been clicked');
-        });
+        // $ourHand.eq(1).on('click', (event)=>{
+        //     // $(event.target).lovers[activePlayer].discard($(event.target));
+        //     console.log('ive been clicked');
+        // });
         
 
     }
@@ -100,9 +131,10 @@ const computer = {
     playedCards: [],
     totalPlayedValue: 0,
     draw: () => {
-        $('#opp-hand').append(`<img class="card their-hand" src="${deck[0].backImg}">`)
+        let newCard = deck[0];
+        $('#opp-hand').append(`<img class="card their-hand" src="${newCard.backImg}">`)
         computer.hand.push(deck[0]);
-        console.log(computer.hand[0].name)
+        console.log(computer.hand)
         deck.shift();
     },
     discard: ()=> {
@@ -142,17 +174,11 @@ const checkTurn = () => {
 }
 
 
-class Card {
-    constructor (name, value, frontImg, backImg = 'images/back.JPG') {
-        this.name = name;
-        this.value = value;
-        this.frontImg = frontImg;
-        this.backImg = backImg;
-    }
-}
+
 
 
 const deck= [];
+
 
 const shuffle= (array)=> {
     for (let i = array.length - 1; i > 0; i--) {
@@ -193,12 +219,13 @@ const $burnedCards = $('.burned-cards');
 
 //game start funcion shuffles deck array and deals out initial cards
 const gameStart = () => {
+    let newCard = deck[0];
     shuffle(deck);
-    $burnedCards.append(`<img class="card" src="${deck[0].backImg}">`);
-    console.log(deck[0].name);
+    $burnedCards.append(`<img class="card" src="${newCard.backImg}">`);
+    // console.log(deck[0].name);
     deck.shift();
     for(let i = 0; i < 3; i++){
-        console.log(deck[0].name);
+        // console.log(deck[0].name);
         let newCard = deck[0];
         $burnedCards.append(`<img class="card" src="${newCard.frontImg}">`);
         deck.shift();
