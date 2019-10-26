@@ -3,41 +3,23 @@
 // 1 card burned faced down 3 cards burned face up
 // player goes first
 // player draws a card then chooses to discard a card
-//guard (1)
-// if card discarded is gaurd then player enters a number between 2 and 8 If computer enters random number
-// if value === opponents card value opp discards card and player wins
-// if not, turn passes to opponent
-//priest (2)
-//if priest discarded then active player gets to see opp' card
-// then pass turn
-//baron (3)
-// if baron discarded current player and oppt reveals card
-//the values of both cards are compared lower one loses
-//handmaid (4)
-//if current player discards handmaid they are protected until their next turn
-//we will have to check if player is protected on each discard
-//prince (5)
-//if prince is discarded opp discards their card and draws a new one
-// if discarded card is princess they lose
-//king (6)
-//if king is discarded, then players swap cards
-//countess (7)
-//if players other card is King or Prince then it must be discarded
-// this must be checked somehow
-//princess (8)
-//if princess is ever discarded that player loses
-//win/lose conditions
+
+
 //if oppt discards due to guard
 //if oppt discards princess
 // if oppt has lesser value in baron compare
 //if no cards are left compare value
 //if that compare is tie then compare total value
+
 //additional goals:
 //rules as pop up modal
 //cards enlarge on hover
+
+
 //////////////////////
 //Class Constructor///
 //////////////////////
+
 class Card {
     constructor (name, value, frontImg, backImg = 'images/back.JPG') {
         this.name = name;
@@ -60,20 +42,27 @@ getState(key) {
 }
 };
 
+
+
+
 $(()=> {
+    
 
 const $promptBox = $('#prompt-text');
 const $drawBtn = $('#btn-draw');
 const $playBtn = $('#btn-play');
 const $passBtn = $('#btn-pass');
 const $playerHand = $('#player-hand');
-// const $ourHand = player.hand;
+const $oppHand = $('.their-hand');
+
 let whichCard = "left"
+
 const player = {
     name: 'Player',
     hand: [],
     playedCards: [],
     totalPlayedValue: 0,
+    protected: false,
     draw: () => {
         let newCard = deck[0];
          player.hand.push(newCard);
@@ -92,14 +81,13 @@ const player = {
         
     }
 }
-// $ourHand.on('click', (event)=>{
-//     console.log("it worked");
-// })
+
 const computer = {
     name: 'Computer',
     hand: [],
     playedCards: [],
     totalPlayedValue: 0,
+    protected: false,
     draw: () => {
         let newCard = deck[0];
         $('#opp-hand').append(`<img class="card their-hand" src="${newCard.backImg}">`)
@@ -110,22 +98,31 @@ const computer = {
     discard: ()=> {
     },
     play: ()=> {
+        if (computer.hand[0].value <= computer.hand[1].value){
+            // logic[computer.hand[0].name];
+            $promptBox.text(`Computer plays ${computer.hand[0].name}`);
+        }else{
+            //logic[computer.hand[1].name]
+            $promptBox.text(`Computer plays ${computer.hand[1].name}`);
+        }
     }
 }
 const lovers = [player, computer];
 let activePlayer = 0;
+let otherPlayer = 1;
+
 //////////////
 //Card Logic//
 //////////////
-const app = {
-    guard () {
+const logic = {
+    guard: () => {
         if(activePlayer === 0){
 
             let guardChoice = prompt('Guess Value of Opponents Hand', "2-8");
-        
-            if (guardChoice === computer.hand[0].value){
+            console.log(computer.hand[0].value);
+            if (parseFloat(guardChoice) === computer.hand[0].value){
             alert(`Computer discards ${computer.hand[0].name} YOU WIN!`);
-
+            
             }else{
                 $promptBox.text('Computer does not have that card');
                 passTurn();
@@ -142,9 +139,53 @@ const app = {
         }
 
     },
-    
-}
+    priest: () => {
+        if (activePlayer === 0) {
+            // $($promptBox).text(`Computer reveals ${computer.hand[0].name}`);
+            $('.their-hand').attr('src', computer.hand[0].frontImg);
+        }else {
+            $promptBox.text('Computer Plays Priest and you reveal your hand');
+        }
+    },
+    baron: () => {
+        //baron (3)
+        // if baron discarded current player and oppt reveals card
+        //the values of both cards are compared lower one loses
 
+    },
+    handmaid: () => {
+        protectPlayer = lovers[activePlayer].protected 
+        protectPlayer = true;
+        console.log(protectPlayer);
+
+    },
+    prince: () => {
+        //prince (5)
+        //if prince is discarded opp discards their card and draws a new one
+        // if discarded card is princess they lose
+
+    },
+    king: () => {
+        //king (6)
+        //if king is discarded, then players swap cards
+
+    },
+    countess: () => {
+        //countess (7)
+        //if players other card is King or Prince then it must be discarded
+        // this must be checked somehow
+
+    },
+    princess: () => {
+        //princess (8)
+        //if princess is ever discarded that player loses
+        //win/lose conditions
+    }
+};
+
+// const compareCards = () => {
+//     if (lovers[activePlayer].hand[1])
+// }
 
 
 const checkTurn = () => {
@@ -159,17 +200,22 @@ const checkTurn = () => {
 // if-else to change active player -
 const passTurn = () => {
     if(activePlayer === 0) {
+        lovers[activePlayer].protected = false;
         activePlayer++;
+        otherPlayer--
         console.log(activePlayer);
         $drawBtn.attr('disabled', false);
     }else{
+        lovers[activePlayer].protected = false;
         activePlayer--;
+        otherPlayer++;
         console.log(activePlayer);
         $drawBtn.attr('disabled', false);
     };
 };
 
 const deck= [];
+
 const shuffle= (array)=> {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -230,6 +276,7 @@ const afterPlay = () => {
 }
 
 
+
 console.log(deck);
 gameStart();
 
@@ -255,7 +302,9 @@ $playBtn.on('click', () => {
             element,
             card: player.hand[0]
           }
-          console.log(state.getState('playerPlayedCard').card.value);
+          let cardLogic = state.getState('playerPlayedCard').card.name;
+          logic[cardLogic]();
+          console.log(state.getState('playerPlayedCard').card.name);
           $(event.currentTarget).off('click');
           $(event.currentTarget).removeAttr('id');
           $(event.currentTarget).appendTo('#player-discard');
@@ -263,7 +312,7 @@ $playBtn.on('click', () => {
           $promptBox.text(`Player played a ${state.getState('playerPlayedCard').card.name}.`);
           $playerHand.css('cursor', 'default');
           $(`#our-hand-right`).off('click');
-          app[state.getState('playerPlayedCard').card.name];
+         
           
 
         });
@@ -275,7 +324,9 @@ $playBtn.on('click', () => {
             element,
             card: player.hand[1]
           });
-          console.log(state.getState('playerPlayedCard').card.value);
+          let cardLogic = state.getState('playerPlayedCard').card.name;
+          logic[cardLogic]();
+          console.log(state.getState('playerPlayedCard').card.name);
           $(event.currentTarget).off('click');
           $(event.currentTarget).removeAttr('id');
           $(event.currentTarget).appendTo('#player-discard');
@@ -283,13 +334,16 @@ $playBtn.on('click', () => {
           $promptBox.text(`Player played a ${state.getState('playerPlayedCard').card.name}.`);
           $playerHand.css('cursor', 'default');
           $(`#our-hand-left`).off('click');
-          app[state.getState('playerPlayedCard').card.name];
+         
+        //   alert('test');
         });
         
           
         }else{
         computer.play();
     }
+    
+    
     
 });
 
