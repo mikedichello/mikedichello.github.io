@@ -1,0 +1,20 @@
+{
+  "name": "tt_selector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "seed": "node ./db/seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-react-views": "^0.11.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.7.12",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
