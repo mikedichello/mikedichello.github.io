@@ -15,12 +15,7 @@ const Games = require('./models/Games.js');
 const gamesController = require('./controllers/games.js');
 
 app.get('/', (req, res) => {
-  Games.find({})
-    .sort({ createdAt: -1 })
-    .limit(3)
-    .then(games => {
-      res.render('Index', { games });
-    });
+  res.render('Home.jsx')
 });
 
 app.use('/games', gamesController);
@@ -29,4 +24,4 @@ mongoose.connection.once('open', () => {
 	console.log('connected to mongo');
 });
 
-app.listen(8000, () => console.log('server is running'));
+app.listen(3000, () => console.log('server is running'));
