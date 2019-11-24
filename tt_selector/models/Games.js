@@ -6,7 +6,8 @@ const GameSchema = new mongoose.Schema({
     minPlayers: {type: Number, min: 1},
     maxPlayers: {type: Number, min: 1},
     complexity: String,
-    lengthOfGame: Number
+    lengthOfGame: Number,
+    img: String
 });
 
 const Game = mongoose.model('Game', GameSchema);

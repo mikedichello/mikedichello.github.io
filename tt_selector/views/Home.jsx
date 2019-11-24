@@ -5,7 +5,7 @@ class Index extends React.Component{
   render() {
     return (
       <AppLayout title="Table Top Selector Homepage">
-      <h2>GAMES</h2>
+      <h2 className="text-info">GAMES</h2>
         
       <p>
         <a href="/restaurants">My Library</a> |
