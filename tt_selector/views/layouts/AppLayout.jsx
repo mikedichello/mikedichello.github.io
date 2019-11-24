@@ -14,13 +14,13 @@ class AppLayout extends React.Component{
         </head>
         <body>
           <header>
-            <h1>{this.props.title}</h1>
+            <h1 className="text-center">{this.props.title}</h1>
             <ul className="nav nav-tabs">
                 <li className="nav-item-info">
-                    <a className="nav-link active" data-toggle="tab" href="/">Home</a>
+                    <a className="nav-link" data-toggle="tab" href="/">Home</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" data-toggle="tab" href="/games/Library">My Game Library</a>
+                    <a className="nav-link" data-toggle="tab" href="/games">My Game Library</a>
                 </li>
                 <li className="nav-item">
                     <a className="nav-link" data-toggle="tab" href="/New">Add New Game</a>
@@ -30,8 +30,12 @@ class AppLayout extends React.Component{
           <main>
             {this.props.children}
           </main>
-          <footer>
-            <h4></h4>
+          <footer className="text-center">
+            <p>
+              <a href="/games">My Library</a> |
+              <a href="/games/new">Add New Game</a>
+            </p>
+            <p className="text-muted">©2019 Michael DiChello</p>
           </footer>
         </body>
       </html>
