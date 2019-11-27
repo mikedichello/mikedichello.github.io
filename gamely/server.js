@@ -1,6 +1,7 @@
 const express = require('express');
 const method = require('method-override');
 const mongoose = require('./db/connection.js');
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -24,4 +25,4 @@ mongoose.connection.once('open', () => {
 	console.log('connected to mongo');
 });
 
-app.listen(3000, () => console.log('server is running'));
+app.listen(port, () => console.log('server is running'));

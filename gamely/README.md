@@ -31,4 +31,4 @@ Each card element contains links to the full show page, an edit link, and the op
 [Game.ly](#)
 
 ## View Repository
-[Github.com](#)
+[Github.com](https://github.com/mikedichello/gamely)
